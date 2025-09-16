@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getBrowserSupabaseClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export default function SignInPage() {
   const [message, setMessage] = useState<string | null>(null);
   const supabase = getBrowserSupabaseClient();
   const [session, setSession] = useState<any>(null);
+  const router = useRouter();
   const fetchSession = async () => {
     const sessionData = await supabase.auth.getSession();
     console.log(sessionData);
@@ -32,6 +34,7 @@ export default function SignInPage() {
       });
       if (error) throw error;
       setMessage("Signed in successfully.");
+      router.replace("/dashboard");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to sign in.";
       setMessage(message);
