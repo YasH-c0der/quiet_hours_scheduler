@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { getBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -18,10 +19,19 @@ export default function SignUpPage() {
     setLoading(true);
     setMessage(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 700));
-      setMessage("Account created (demo). Proceed to sign in.");
+      const supabase = getBrowserSupabaseClient();
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: typeof window !== "undefined" ? `${window.location.origin}/sign-in` : undefined,
+        },
+      });
+      if (error) throw error;
+      setMessage("Check your email to confirm your account.");
     } catch (err) {
-      setMessage("Failed to create account.");
+      const message = err instanceof Error ? err.message : "Failed to create account.";
+      setMessage(message);
     } finally {
       setLoading(false);
     }

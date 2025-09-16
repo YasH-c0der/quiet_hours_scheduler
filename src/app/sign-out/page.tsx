@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { getBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export default function SignOutPage() {
   const [loading, setLoading] = useState(false);
@@ -10,10 +11,13 @@ export default function SignOutPage() {
     setLoading(true);
     setMessage(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setMessage("Signed out (demo). Redirect as needed.");
+      const supabase = getBrowserSupabaseClient();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setMessage("Signed out.");
     } catch (err) {
-      setMessage("Failed to sign out.");
+      const message = err instanceof Error ? err.message : "Failed to sign out.";
+      setMessage(message);
     } finally {
       setLoading(false);
     }
@@ -38,5 +42,3 @@ export default function SignOutPage() {
     </main>
   );
 }
-
-

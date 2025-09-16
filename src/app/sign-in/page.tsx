@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { getBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -13,10 +14,13 @@ export default function SignInPage() {
     setLoading(true);
     setMessage(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      setMessage("Signed in (demo). Redirect as needed.");
+      const supabase = getBrowserSupabaseClient();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      setMessage("Signed in successfully.");
     } catch (err) {
-      setMessage("Failed to sign in.");
+      const message = err instanceof Error ? err.message : "Failed to sign in.";
+      setMessage(message);
     } finally {
       setLoading(false);
     }
