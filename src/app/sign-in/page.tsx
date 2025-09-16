@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export default function SignInPage() {
@@ -8,6 +8,17 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const supabase = getBrowserSupabaseClient();
+  const [session, setSession] = useState<any>(null);
+  const fetchSession = async () => {
+    const sessionData = await supabase.auth.getSession();
+    console.log(sessionData);
+    setSession(sessionData.data);
+  };
+
+  useEffect(() => {
+    fetchSession();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -15,7 +26,10 @@ export default function SignInPage() {
     setMessage(null);
     try {
       const supabase = getBrowserSupabaseClient();
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) throw error;
       setMessage("Signed in successfully.");
     } catch (err) {
@@ -32,7 +46,9 @@ export default function SignInPage() {
         <h1 className="text-2xl font-semibold mb-6">Sign in</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm">Email</label>
+            <label htmlFor="email" className="block text-sm">
+              Email
+            </label>
             <input
               id="email"
               type="email"
@@ -44,7 +60,9 @@ export default function SignInPage() {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="password" className="block text-sm">Password</label>
+            <label htmlFor="password" className="block text-sm">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -65,12 +83,14 @@ export default function SignInPage() {
         </form>
         {message && <p className="mt-4 text-sm">{message}</p>}
         <div className="mt-6 text-sm flex justify-between">
-          <Link href="/sign-up" className="underline">New here? Create an account</Link>
-          <Link href="/" className="underline">Home</Link>
+          <Link href="/sign-up" className="underline">
+            New here? Create an account
+          </Link>
+          <Link href="/" className="underline">
+            Home
+          </Link>
         </div>
       </div>
     </main>
   );
 }
-
-
