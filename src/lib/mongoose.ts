@@ -18,5 +18,3 @@ export async function connectMongoose() {
   });
   return global._mongooseConn;
 }
-
-

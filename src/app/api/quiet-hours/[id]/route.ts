@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { markQuietHourNotified } from "@/lib/models/quietHour";
 import { model } from "mongoose";
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, context: any) {
   try {
     const supabase = await getServerSupabaseClient();
     const { data } = await supabase.auth.getUser();
@@ -14,7 +14,7 @@ export async function DELETE(_: Request, { params }: { params: { id: string } })
 
     await connectMongoose();
     const QuietHour = mongoose.models.QuietHour || model("QuietHour");
-    const res = await QuietHour.deleteOne({ _id: params.id, userId });
+    const res = await QuietHour.deleteOne({ _id: context?.params?.id, userId });
     return NextResponse.json({ deleted: res.deletedCount === 1 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -22,7 +22,7 @@ export async function DELETE(_: Request, { params }: { params: { id: string } })
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, context: any) {
   try {
     const supabase = await getServerSupabaseClient();
     const { data } = await supabase.auth.getUser();
@@ -37,7 +37,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     await connectMongoose();
     const QuietHour = mongoose.models.QuietHour || model("QuietHour");
-    const res = await QuietHour.updateOne({ _id: params.id, userId }, { $set: { notified } });
+    const res = await QuietHour.updateOne({ _id: context?.params?.id, userId }, { $set: { notified } });
     return NextResponse.json({ updated: res.modifiedCount === 1 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
