@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSupabaseClient } from "@/lib/supabase/server";
 import { connectMongoose } from "@/lib/mongoose";
 import mongoose from "mongoose";
-import { markQuietHourNotified } from "@/lib/models/quietHour";
 import { model } from "mongoose";
 
 export async function DELETE(_: Request, context: any) {

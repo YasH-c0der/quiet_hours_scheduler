@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSupabaseClient } from "@/lib/supabase/server";
 import { connectMongoose } from "@/lib/mongoose";
-import mongoose from "mongoose";
 import { createQuietHour, listQuietHoursForUser } from "@/lib/models/quietHour";
 
 export async function GET() {
@@ -48,5 +47,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-
