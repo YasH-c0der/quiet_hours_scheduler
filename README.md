@@ -46,3 +46,14 @@ SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 Only the `NEXT_PUBLIC_*` variables are exposed to the browser. Do not expose the service role key publicly.
+
+## MongoDB
+
+Add the following variables to `.env.local` and fill in your connection details:
+
+```
+MONGODB_URI=
+MONGODB_DB=
+```
+
+`MONGODB_URI` is the full connection string (e.g., from MongoDB Atlas), and `MONGODB_DB` is the default database name.
