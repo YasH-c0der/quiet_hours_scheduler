@@ -10,7 +10,8 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const supabase = getBrowserSupabaseClient();
-  const [session, setSession] = useState<any>(null);
+  type SessionData = { session: unknown } | null;
+  const [session, setSession] = useState<SessionData>(null);
   const router = useRouter();
   const fetchSession = async () => {
     const sessionData = await supabase.auth.getSession();
@@ -20,7 +21,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     fetchSession();
-  }, []);
+  }, [supabase]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

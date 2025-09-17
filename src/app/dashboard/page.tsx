@@ -9,7 +9,8 @@ export default function DashboardPage() {
   const router = useRouter();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState<any[]>([]);
+  type QuietItem = { _id: string; startTime: string; endTime: string; notified: boolean };
+  const [items, setItems] = useState<QuietItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
