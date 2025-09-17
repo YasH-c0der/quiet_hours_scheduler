@@ -24,3 +24,14 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Style calendar icons inside datetime-local inputs (WebKit/Blink) */
+.calendar-accent::-webkit-calendar-picker-indicator {
+  filter: invert(28%) sepia(94%) saturate(2746%) hue-rotate(210deg) brightness(95%) contrast(96%);
+  opacity: 1;
+}
+
+/* Firefox uses accent-color for date picker button */
+.calendar-accent {
+  accent-color: #2563eb; /* Tailwind blue-600 */
+}

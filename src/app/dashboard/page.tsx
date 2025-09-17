@@ -92,7 +92,7 @@ export default function DashboardPage() {
               type="datetime-local"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded border px-3 py-2 calendar-accent"
               required
             />
           </div>
@@ -102,7 +102,7 @@ export default function DashboardPage() {
               type="datetime-local"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="w-full rounded border px-3 py-2"
+              className="w-full rounded border px-3 py-2 calendar-accent"
               required
             />
           </div>
